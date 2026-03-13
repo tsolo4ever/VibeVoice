@@ -12,6 +12,7 @@ class VibeVoiceFullConverter:
                  cfg_scale: float = 1.5,
                  log_cb: Optional[Callable] = None,
                  progress_cb: Optional[Callable] = None,
+                 chunk_cb: Optional[Callable] = None,
                  debug: bool = False):
         self.model_path = model_path
         self.voice_path = voice_path
@@ -24,7 +25,7 @@ class VibeVoiceFullConverter:
         self._stop = True
 
     def convert(self, input_path: str, output_path: str,
-                title: str = '', author: str = '') -> str:
+                title: str = '', author: str = '', meta=None) -> str:
         raise NotImplementedError(
             'VibeVoice 1.5B (full model) is not yet implemented.\n'
             'Please use VibeVoice-Realtime-0.5B (model_type: vibevoice_streaming).'

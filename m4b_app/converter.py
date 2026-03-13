@@ -55,7 +55,7 @@ def parse_epub(path: str) -> List[Tuple[str, str]]:
     chapters = []
 
     for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-        soup = BeautifulSoup(item.get_content(), 'lxml')
+        soup = BeautifulSoup(item.get_content(), features='xml')
 
         title = None
         for tag in ['h1', 'h2', 'h3']:
@@ -78,7 +78,7 @@ def parse_epub(path: str) -> List[Tuple[str, str]]:
     if not chapters:
         parts = []
         for item in book.get_items_of_type(ebooklib.ITEM_DOCUMENT):
-            soup = BeautifulSoup(item.get_content(), 'lxml')
+            soup = BeautifulSoup(item.get_content(), features='xml')
             parts.append(soup.get_text(separator='\n', strip=True))
         chapters = [(Path(path).stem, '\n\n'.join(parts))]
 
