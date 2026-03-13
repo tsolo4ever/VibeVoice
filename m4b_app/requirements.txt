@@ -1,0 +1,13 @@
+torch
+torchaudio
+transformers
+accelerate
+sentencepiece
+protobuf
+numpy
+soundfile
+scipy
+ffmpeg-python
+beautifulsoup4
+ebooklib
+lxml

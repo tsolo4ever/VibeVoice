@@ -48,9 +48,11 @@ class MockCacheLayer:
         self._layer_idx = layer_idx
     
     def get_mask_sizes(self, cache_position):
-        """Return KV length and offset for mask creation."""
+        """Return KV length and offset for mask creation.
+        Must return cached_len + query_len to match transformers>=4.57 DynamicLayer behavior."""
         kv_length = self.key_cache.shape[2] if self.key_cache is not None else 0
-        return kv_length, 0
+        query_length = cache_position.shape[0] if cache_position is not None else 0
+        return kv_length + query_length, 0
     
     def update(self, key_states, value_states, cache_kwargs=None):
         """Update the cache with new key/value states."""
