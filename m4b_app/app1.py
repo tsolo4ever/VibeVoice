@@ -122,9 +122,14 @@ class App(tk.Tk):
                   orient='horizontal', length=220).grid(row=1, column=1, columnspan=2, sticky='w', **p)
         self._cfg_label.grid(row=1, column=3, sticky='w')
 
+        ttk.Label(sf, text='Parallel chunks:').grid(row=2, column=0, sticky='w', **p)
+        self._parallel_var = tk.IntVar(value=2)
+        _spin = ttk.Spinbox(sf, from_=1, to=8, textvariable=self._parallel_var, width=4)
+        _spin.grid(row=2, column=1, sticky='w', padx=6, pady=3)
+
         self._debug_var = tk.BooleanVar(value=False)
         ttk.Checkbutton(sf, text='Debug logging', variable=self._debug_var).grid(
-            row=2, column=1, sticky='w', padx=6, pady=3)
+            row=2, column=2, sticky='w', padx=6, pady=3)
 
         # --- Actions ---
         af = ttk.Frame(self)
@@ -328,6 +333,7 @@ class App(tk.Tk):
                 log_cb=log_cb,
                 progress_cb=progress_cb,
                 debug=self._debug_var.get(),
+                parallel_chunks=self._parallel_var.get(),
             )
             self._conv = conv
 

@@ -32,7 +32,8 @@ class VibeVoiceStreamingConverter:
                  cfg_scale: float = 1.5,
                  log_cb: Optional[Callable] = None,
                  progress_cb: Optional[Callable] = None,
-                 debug: bool = False):
+                 debug: bool = False,
+                 parallel_chunks: int = PARALLEL_CHUNKS):
         self.model_path = model_path
         self.voice_path = voice_path
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -41,6 +42,7 @@ class VibeVoiceStreamingConverter:
         self.log_cb = log_cb or print
         self.progress_cb = progress_cb
         self.debug = debug
+        self.parallel_chunks = parallel_chunks
         self.model = None
         self.processor = None
         self._stop = False
@@ -294,7 +296,7 @@ class VibeVoiceStreamingConverter:
                     self._generate_chunk(chunk, out_wav)
                     return out_wav
 
-                with ThreadPoolExecutor(max_workers=PARALLEL_CHUNKS) as pool:
+                with ThreadPoolExecutor(max_workers=self.parallel_chunks) as pool:
                     for out_wav in pool.map(do_chunk, valid):
                         if self._stop:
                             raise RuntimeError('Cancelled.')
